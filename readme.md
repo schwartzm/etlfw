@@ -9,13 +9,13 @@ This document is not a prescription for creating an ETL, nor does it recommend a
 ## Terms
 Terms, as used in this document, that might need some disambiguation or clarification.
 
-**Extract (E in "ETL")** - Extract (i.e., export, download, qurey) data from a source repository (e.g., RDBMS), with the intent of loading the data into a destination repository.
+**Extract (E in "ETL")** - Extract (i.e., export, download, query) data from a source repository (e.g., RDBMS), with the intent of loading the data into a destination repository.
 
 **Transform (T in "ETL")** - Transform (i.e., change, manipulate, convert) all, or a subset, of the data extracted from the source repository, before loading data into the destination repository. Transformation may only be necessitated by business, analytics, or destination repository requirements.
 
 **Load (L in "ETL")** - Load (i.e., import, upload, insert) the extracted, and possibly transformed, data into a desitination repository.
 
-**Repository** - A medium that stores data to be extracted or loaded. E.g., relational database, document database, key-value database, flat file. A.k.a., "repo".
+**Repository** - A medium that stores data to be extracted or loaded. Extract from a "source" repository. Load into a "destination" repository. E.g., relational database, document database, key-value database, flat file. A.k.a., "repo".
 
 ## Outline
 Outline of aspects to be considered when designing an ETL.
@@ -42,17 +42,17 @@ Outline of aspects to be considered when designing an ETL.
   - ETL Program Files Ownership
 - Source Repository
   - Type (e.g., RDBMS, Wide-Column NoSQL, CSV)
-  - Access
-  - Destination
+  - Access Protocol
+  - ...
 - Destination Repository
   - Type (e.g., RDBMS, Wide-Column NoSQL, CSV)
-  - Source
-  - Destination
+  - Access Protocol
+  - ...
 - Transfer From Source to Destination Repos
   - How the extracted data actually gets to the destination
-  - E, T, and L traverse untrusted network (scp, sFTP, mTLS, key pairs, h/w encrypter)
-  - E, T, and L all execute in same local network (scp, NFS)
-  - E, T, and L all execute in same host (share common dir with strict ACLs)
+  - Data traverses untrusted network (scp, sFTP, mTLS, key pairs, h/w encrypter)
+  - Data remains in same local network, different hosts, all firewalled (scp, NFS)
+  - Data all on same host until load (share common dir with strict ACLs)
 - Configuration
   - Source Repo Connection Config
   - Destination Repo Connection Config
@@ -71,7 +71,7 @@ Outline of aspects to be considered when designing an ETL.
   - Single or Multi-threaded
       - E.g., If extracting records from tables, each extract can run in parallel
   - Recall end of last ETL run; where to start next query (Sort of like Paging)
-    - Store an extract record somewhere (e.g., last fetched primary key in a growth table)
+    - Store an extract record somewhere (e.g., last fetched primary key)
 - Transform Phase
   - Transform Rules (what to transform, when, and how)
   - Source format

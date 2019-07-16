@@ -1,34 +1,79 @@
 # ETL FW
 
 ## Overview
-ETL FW describes considerations, and maybe a loose framework, for implementing data ETLs / pipelines. As every environment is different, this document is not prescriptive nor does it cover every possible condition, constraint, or available option.
+This document, ETL FW ("ETL Framework"), presents design considerations for ETL implementation. This can be used as a checklist, preliminary outline, or starting point for an ETL design. This design outline may present more than is necessary for a specific ETL implementation. Unused sections should be marked N/A, rather than be deleted.E, T, and L all execute in same local network.
 
-For clarification, the abbreviation "ETL" is interpreted as:
+## What This is Not
+This document is not a prescription for creating an ETL, nor does it recommend any specific technology for ETL implementation.
 
-a. Extract (E) - Extract (export, download, qurey) data from a source repository, or storage.
+## Terms
+Terms, as used in this document, that might need some disambiguation or clarification.
 
-b. Transform (T) - Transform (change, manipulate, modify) some or all of data extracted from the source repository, before loading (next) into the destination repository. Transformation is optional.
+**Extract (E in "ETL")** - Extract (i.e., export, download, qurey) data from a source repository (e.g., RDBMS), with the intent of loading the data into a destination repository.
 
-c. Load (L) - Load (import, upload, insert) the data extracted, and possibly transformed, into a designated desitination repository.
-## Aspects
-There are several aspects which must be considered, such as:
+**Transform (T in "ETL")** - Transform (i.e., change, manipulate, convert) all, or a subset, of the data extracted from the source repository, before loading data into the destination repository. Transformation may only be necessitated by business, analytics, or destination repository requirements.
 
-- Execution Runtime
-  - Monolithic program
-  - Modular, with some glue
-  - Execution host(s)
-- Configuration
-- Respositories
-  - Types
+**Load (L in "ETL")** - Load (i.e., import, upload, insert) the extracted, and possibly transformed, data into a desitination repository.
+
+**Repository** - A medium that stores data to be extracted or loaded. E.g., relational database, document database, key-value database, flat file. A.k.a., "repo".
+
+## Outline
+Outline of aspects to be considered when designing an ETL.
+
+- ETL Execution
+  - E, T, and L Logic: Where is Each?
+  - Monolithic Structure
+    - E, T, & L in a Single Script or Binary
+  - Component / Modular Structure
+    - Extract Module
+    - Transform Module
+    - Load Module
+    - Glue the E, T, & L together
+    - Schedule each phase
+  - Execution Platform
+- Security
+  - Repository access protocol and security
+  - Repository authentication
+  - Repository bind credentials storage
+  - Network over which data is transferred
+  - Cached Extracted Data (temporary, working storage)
+    - Any of delete, shred, wipe, secure-delete, after run
+  - Execution identity
+  - ETL Program Files Ownership
+- Source Repository
+  - Type (e.g., RDBMS, Wide-Column NoSQL, CSV)
+  - Access
+  - Destination
+- Destination Repository
+  - Type (e.g., RDBMS, Wide-Column NoSQL, CSV)
   - Source
   - Destination
-- Extract
-  - source repository
+- Transfer From Source to Destination Repos
+  - How the extracted data actually gets to the destination
+  - E, T, and L traverse untrusted network (scp, sFTP, mTLS, key pairs, h/w encrypter)
+  - E, T, and L all execute in same local network (scp, NFS)
+  - E, T, and L all execute in same host (share common dir with strict ACLs)
+- Configuration
+  - Source Repo Connection Config
+  - Destination Repo Connection Config
+  - Source Repo Bind Credentials
+  - Destination Repo Bind Credentials
+  - Source Repo Query (Extract)
+  - Destination Repo Query (Insert)
+  - Extract data file naming (if files are in solution)
+- Extract Phase
+  - Source Repository
   - Schedule
-  - Failures
+  - Failure and Error Handling
   - Duration
-  - Threadedness
-- Transform
+    - Constant over time
+    - Grow over time
+  - Single or Multi-threaded
+      - E.g., If extracting records from tables, each extract can run in parallel
+  - Recall end of last ETL run; where to start next query (Sort of like Paging)
+    - Store an extract record somewhere (e.g., last fetched primary key in a growth table)
+- Transform Phase
+  - Transform Rules (what to transform, when, and how)
   - Source format
   - Output format
   - Attribute (column) level changes
@@ -37,10 +82,11 @@ There are several aspects which must be considered, such as:
     - Server side (query-driven trigger, stored procedure)
     - In extract code (client side)
   - Failures
-- Load
-  - destination repository
+- Load Phase
+  - Destination Repository
   - Schedule
-  - Failures
+  - Failure and Error Handling
   - Duration
-  - Threadedness
-- 
+    - Constant over time
+    - Grow over time  
+  - Single or Multi-threaded

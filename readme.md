@@ -1,7 +1,7 @@
 # ETL FW
 
 ## Overview
-This document, ETL FW ("ETL Framework"), presents design considerations for ETL implementation. This can be used as a checklist, preliminary outline, or starting point for an ETL design. This design outline may present more than is necessary for a specific ETL implementation. Unused sections should be marked N/A, rather than be deleted.E, T, and L all execute in same local network.
+This document, ETL FW ("ETL Framework"), presents design considerations for ETL implementation. This can be used as a checklist, preliminary outline, or starting point for an ETL design. This design outline may present more than is necessary for a specific ETL implementation. Unused sections should be marked N/A, rather than be deleted.
 
 ## What This is Not
 This document is not a prescription for creating an ETL, nor does it recommend any specific technology for ETL implementation.
@@ -42,8 +42,9 @@ Outline of aspects to be considered when designing an ETL.
   - ETL Program Files Ownership
 - Source Repository
   - Type (e.g., RDBMS, Wide-Column NoSQL, CSV)
-  - Access Protocol
-  - ...
+  - Access Protocol (e.g., REST, JDBC, SOAP)
+  - Authentication Method
+  - I/O Encryption & Integrity (e.g., HTTPS, TLS 1.2, mTLS)
 - Destination Repository
   - Type (e.g., RDBMS, Wide-Column NoSQL, CSV)
   - Access Protocol

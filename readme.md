@@ -4,6 +4,7 @@
 ETL FW describes considerations, and maybe a loose framework, for implementing data ETLs / pipelines. As every environment is different, this document is not prescriptive nor does it cover every possible condition, constraint, or available option.
 
 For clarification, the abbreviation "ETL" is interpreted as:
+
 a. Extract (E) - Extract (export, download, qurey) data from a source repository, or storage.
 
 b. Transform (T) - Transform (change, manipulate, modify) some or all of data extracted from the source repository, before loading (next) into the destination repository. Transformation is optional.

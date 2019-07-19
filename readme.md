@@ -29,8 +29,28 @@ Outline of aspects to be considered when designing an ETL.
     - Transform Module
     - Load Module
     - Glue the E, T, & L together
-    - Schedule each phase
+  - Job scheduling
   - Execution Platform
+- Logging
+  - Logged information (What to log)
+  - Granularity (ETL, steps within ETL)
+  - Logging facility (log host, local host)
+  - Logging by each participating ETL technology
+  - Format, viewing, audience
+- Testing & Validation
+  - Initial (during launch)
+  - Recurring (over time, re-validate)
+- Failures & Errors
+  - Retry
+  - Idempotency of retry
+  - Identification of failure
+- Monitoring & Alerting
+  - What and how to monitor
+  - Monitoring facility
+  - Monitoring rules
+  - Alerting rules
+  - Alert recipients
+  - Defined response
 - Security
   - Repository access protocol and security
   - Repository authentication
@@ -66,7 +86,7 @@ Outline of aspects to be considered when designing an ETL.
   - Source Repository
   - Schedule
   - Failure and Error Handling
-  - Duration
+  - Duration (Time)
     - Constant over time
     - Grow over time
   - Single or Multi-threaded
@@ -87,7 +107,8 @@ Outline of aspects to be considered when designing an ETL.
   - Destination Repository
   - Schedule
   - Failure and Error Handling
-  - Duration
+  - Duration (Time)
     - Constant over time
     - Grow over time  
   - Single or Multi-threaded
+  - Append, Replace, or Update Destination
